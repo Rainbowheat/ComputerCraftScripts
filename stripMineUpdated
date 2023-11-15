@@ -131,6 +131,11 @@ function moveToAnotherVector (whereToGo, whereAm) --always assume looking in z a
     yDisplaceMent = whereToGo.y - whereAm.y
     zDisplaceMent = whereToGo.z - whereAm.z
 
+
+    print(xDisplaceMent)
+    print(yDisplaceMent)
+    print(zDisplaceMent)
+
     print(whereToGo)
     print(whereAm)
 
