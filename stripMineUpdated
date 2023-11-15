@@ -24,7 +24,6 @@ function checkIfOre(direction)
     if checker then
         for key, value in pairs(allOres) do
             if data.name == value then
-                print("REAL ORE")
                 return true
             end
         end
@@ -38,8 +37,8 @@ end
         foundAOre = false
 
         if checkIfOre(0) then
-            print("Print Ore Ahead")
             print(currentPosition+vector.new(0,0,1))
+            print("^ where to go")
             table.insert(veinValues, vector.new(currentPosition + vector.new(0,0,1)))
             foundAOre = true
         end
@@ -47,7 +46,6 @@ end
         turtle.turnLeft()
     
         if checkIfOre(0) then
-            print("Print Ore To the Left")
             table.insert(veinValues, vector.new(currentPosition + vector.new(1,0,0)))
             foundAOre = true
         end
@@ -55,7 +53,6 @@ end
         turtle.turnLeft()
     
         if checkIfOre(0) then
-            print("Print Ore To the Behind")
             table.insert(veinValues, vector.new(currentPosition + vector.new(0,0,-1)))
             foundAOre = true
         end
@@ -63,7 +60,6 @@ end
         turtle.turnLeft()
     
         if checkIfOre(0) then
-            print("Print Ore To the Right")
             table.insert(veinValues, vector.new(currentPosition + vector.new(-1,0,0)))
             foundAOre = true
         end
@@ -71,13 +67,11 @@ end
         turtle.turnLeft()
 
         if checkIfOre(1) then
-            print("Print Ore To the Up")
             table.insert(veinValues, vector.new(currentPosition+ vector.new(0,1,0)))
             foundAOre = true
         end
 
         if checkIfOre(2) then
-            print("Print Ore To the Down")
             table.insert(veinValues, vector.new(currentPosition+ vector.new(0,-1,0)))
             foundAOre = true
         end
@@ -117,7 +111,7 @@ function mineVein(turned)
             veinFinished = true
             break
             else
-                print(print(#veinValues .. "lenght table"))
+                print(#veinValues .. "lenght table")
         end
         moveToAnotherVector(startVeinPosition, currentPosition)
     end
@@ -131,13 +125,10 @@ function moveToAnotherVector (whereToGo, whereAm) --always assume looking in z a
     yDisplaceMent = whereToGo.y - whereAm.y
     zDisplaceMent = whereToGo.z - whereAm.z
 
-
-    print(xDisplaceMent)
-    print(yDisplaceMent)
-    print(zDisplaceMent)
-
     print(whereToGo)
+    print("^ where to go")
     print(whereAm)
+    print("^ where am")
 
     function xForward(displaceMent)
 
@@ -262,7 +253,6 @@ fuelAmount = turtle.getFuelLevel()
 --distanceToMine equal to void main
 for x = 0,distanceToMine,1
 do 
-    print("checking")
     os.sleep(0.2)
     
     
