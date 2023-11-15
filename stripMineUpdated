@@ -40,7 +40,7 @@ end
         if checkIfOre(0) then
             print("Print Ore Ahead")
             print(currentPosition+vector.new(0,0,1))
-            table.insert(vector.new(currentPosition + vector.new(0,0,1)))
+            table.insert(veinValues, vector.new(currentPosition + vector.new(0,0,1)))
             foundAOre = true
         end
     
@@ -48,7 +48,7 @@ end
     
         if checkIfOre(0) then
             print("Print Ore To the Left")
-            table.insert(vector.new(currentPosition + vector.new(1,0,0)))
+            table.insert(veinValues, vector.new(currentPosition + vector.new(1,0,0)))
             foundAOre = true
         end
     
@@ -56,7 +56,7 @@ end
     
         if checkIfOre(0) then
             print("Print Ore To the Behind")
-            table.insert(vector.new(currentPosition + vector.new(0,0,-1)))
+            table.insert(veinValues, vector.new(currentPosition + vector.new(0,0,-1)))
             foundAOre = true
         end
     
@@ -64,7 +64,7 @@ end
     
         if checkIfOre(0) then
             print("Print Ore To the Right")
-            table.insert(vector.new(currentPosition + vector.new(-1,0,0)))
+            table.insert(veinValues, vector.new(currentPosition + vector.new(-1,0,0)))
             foundAOre = true
         end
     
@@ -72,13 +72,13 @@ end
 
         if checkIfOre(1) then
             print("Print Ore To the Up")
-            table.insert(vector.new(currentPosition+ vector.new(0,1,0)))
+            table.insert(veinValues, vector.new(currentPosition+ vector.new(0,1,0)))
             foundAOre = true
         end
 
         if checkIfOre(2) then
             print("Print Ore To the Down")
-            table.insert(vector.new(currentPosition+ vector.new(0,-1,0)))
+            table.insert(veinValues, vector.new(currentPosition+ vector.new(0,-1,0)))
             foundAOre = true
         end
 
