@@ -104,22 +104,13 @@ function mineVein(turned)
                 moveToAnotherVector(veinValues[1]["vectorval"],currentPosition)
                 table.remove(veinValues, 1)
                 checkAround(currentPosition)
-            else 
+            else --this is breaking constantly
+                print(veinValues[1]["vectorval"])
                 break
             end
             
         end
-        
-        
-
-        for k, v in pairs(veinValues) do
-            for k, v in pairs(v) do
-                print(v)
-            end
-        end
-
-        
-        
+ 
         if(#veinValues == 0) then
             veinFinished = true
             break
@@ -276,7 +267,7 @@ do
 
     for k,v in pairs(veinValues) do
         for k,v in pairs(veinValues) do
-            print(v)
+            --print(v)
         end
     end
 
