@@ -94,7 +94,10 @@ function mineVein(turned)
     -- is looping forever 
     while veinFinished == false do
         if (veinValues[1] ~= nil) then
-            if(veinValues[1]~= nil) then -- up to here
+            if (veinValues[1] == vector.new(0,0,0)) then
+                table.remove(veinValues, 1)
+            end
+            elseif(veinValues[1]~= nil) then -- up to here
                 print("success moving to another vec")
                 print(veinValues[1])
                 moveToAnotherVector(veinValues[1],currentPosition)
