@@ -82,11 +82,7 @@ end
             foundAOre = true
         end
 
-        for k,v in pairs(veinValues) do
-            for k,v in pairs(veinValues) do
-                print(v)
-            end
-        end
+        
 
         return foundAOre
 
@@ -277,6 +273,13 @@ do
         print("ORE FOUND")
         mineVein()
     end
+
+    for k,v in pairs(veinValues) do
+        for k,v in pairs(veinValues) do
+            print(v)
+        end
+    end
+
     turtle.dig()
     turtle.forward()
     fuelAmount = turtle.getFuelLevel()
