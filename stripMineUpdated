@@ -1,0 +1,282 @@
+function checkIfGlowstone(Boo)
+    local success, data = turtle.inspect()
+
+    if success then
+        if data.name == "minecraft:glowstone" then
+            return true
+        end
+    end
+end
+
+function checkIfOre(direction)
+
+    checkAround()
+
+    if direction == 0 then
+        checker, data = turtle.inspect() -- if forward don't add to y column 
+    end
+    if direction == 1 then
+        checker, data = turtle.inspectUp() -- add one to y value
+    end
+    if direction == 2 then
+        checker, data = turtle.inspectDown() -- minus one to y value 
+    end 
+
+
+    if checker then
+        for key, value in pairs(allOres) do
+            if data.name == value then
+                print("REAL ORE")
+                return true
+            end
+        end
+        return false
+    end
+end
+
+-- turn to straight afterwards
+    function checkAround()
+
+        if checkIfOre(0) then
+            print("ErrorTest")
+            print(currentPosition+vector.new(0,0,1))
+            table.insert(veinValues, {vector = vector.new(currentPosition + vector.new(0,0,1)), broken = false})
+        end
+    
+        turtle.turnLeft()
+    
+        if checkIfOre(0) then
+            table.insert(veinValues, {vector = vector.new(currentPosition + vector.new(1,0,0)), broken = false})
+        end
+    
+        turtle.turnLeft()
+    
+        if checkIfOre(0) then
+            table.insert(veinValues, {vector = vector.new(currentPosition + vector.new(0,0,-1)), broken = false})
+        end
+    
+        turtle.turnLeft()
+    
+        if checkIfOre(0) then
+            table.insert(veinValues, {vector = vector.new(currentPosition + vector.new(-1,0,0)), broken = false})
+        end
+    
+        turtle.turnLeft()
+
+        if checkIfOre(1) then
+            table.insert(veinValues, {vector = vector.new(currentPosition+ vector.new(0,1,0)), broken = false})
+        end
+
+        if checkIfOre(2) then
+            table.insert(veinValues, {vector = vector.new(currentPosition+ vector.new(0,-1,0)), broken = false})
+        end
+    end
+
+
+function mineVein(turned)
+    os.sleep(0.2)
+    local startVeinPosition = vector.new(0,0,0)
+    local currentPosition = vector.new(0,0,0) -- after everymovement add to this
+    
+    veinFinished = false
+    
+    -- main loop
+    -- is looping forever 
+    while veinFinished == false do
+        if (veinValues[1] ~= nil) then
+            if(veinValues[1]["vectorval"]~= nil) then -- up to here
+                moveToAnotherVector(veinValues[1]["vectorval"],currentPosition)
+                table.remove(veinValues, 1)
+                table.sort(veinValues)
+                checkAround()
+            else 
+                break
+            end
+            
+        end
+        
+        
+
+        for k, v in pairs(veinValues) do
+            for k, v in pairs(v) do
+                print(v)
+            end
+        end
+
+        
+        
+        if(#veinValues == 0) then
+            veinFinished = true
+            break
+            else
+                print(print(#veinValues .. "lenght table"))
+        end
+        moveToAnotherVector(startVeinPosition, currentPosition)
+    end
+
+    
+end
+
+function moveToAnotherVector (whereToGo, whereAm) --always assume looking in z axis at start 
+
+    xDisplaceMent = whereToGo.x - whereAm.x
+    yDisplaceMent = whereToGo.y - whereAm.y
+    zDisplaceMent = whereToGo.z - whereAm.z
+
+    print(whereToGo)
+    print(whereAm)
+
+    function xForward(displaceMent)
+
+        local normalisedDisplaceMent = 0
+
+        if displaceMent > 0 then
+            turtle.turnLeft()
+            normalisedDisplaceMent = displaceMent
+        elseif displaceMent < 0 then
+            turtle.turnRight()
+            normalisedDisplaceMent = displaceMent * -1
+        end
+        
+        if displaceMent ~= 0 then
+            
+            i = 0
+            while i < normalisedDisplaceMent do
+                if turtle.forward() then
+                    i=i+1
+                    print(i)
+                else
+                    turtle.dig()
+                end
+            end
+        end
+
+        if displaceMent < 0 then
+            turtle.turnLeft()
+        elseif displaceMent > 0 then
+            turtle.turnRight()
+        end
+    end
+
+    function zForward(displaceMent)
+
+        local normalisedDisplaceMent = 0
+
+        if displaceMent < 0 then
+            turtle.turnLeft()
+            turtle.turnLeft()
+            normalisedDisplaceMent = displaceMent * -1
+        else
+            normalisedDisplaceMent = displaceMent
+        end
+        
+        
+        if displaceMent ~= 0 then
+            i = 0
+            while i < normalisedDisplaceMent
+            do
+                if turtle.forward() then
+                    i=i+1
+                else
+                    turtle.dig()
+                end
+            end
+        end
+        
+
+        if displaceMent < 0 then
+            turtle.turnLeft()
+            turtle.turnLeft()
+        end
+        
+    end
+
+    function yForward(displaceMent)
+        if displaceMent ~= 0 then
+            if displaceMent > 0 then
+                i = 0
+                while i < displaceMent
+                do
+                    if turtle.up() then
+                        i=i+1
+                    else
+                        turtle.digUp()
+                    end
+                end
+            else
+                displaceMent = -displaceMent
+
+                i = 0
+                while i < displaceMent
+                do
+                    if turtle.down() then
+                        i=i+1
+                    else
+                        turtle.digDown()
+                    end
+                end
+            end
+        end
+    end
+    
+    zForward(zDisplaceMent)
+
+    xForward(xDisplaceMent)
+
+    yForward(yDisplaceMent)
+    
+end
+
+home = vector.new(0,0,0)
+
+veinValues = {{vectorval = vector.new(0,0,0), broken = false}}
+
+
+--White list of ores
+allOres = {"minecraft:coal_ore", "minecraft:deepslate_coal_ore",
+ "minecraft:iron_ore", "minecraft:deepslate_iron_ore",
+  "minecraft:gold_ore", "minecraft:deepslate_gold_ore",
+   "minecraft:diamond_ore", "minecraft:deepslate_diamond_ore",
+   "immersiveengineering:ore_silver","immersiveengineering:deepslate_ore_silver", "minecraft:netherrack"}
+
+ 
+print("How far to Mine: ")
+distanceToMine = tonumber(read())
+ 
+fuelAmount = turtle.getFuelLevel()
+ 
+
+--distanceToMine equal to void main
+for x = 0,distanceToMine,1
+do 
+    print("checking")
+    os.sleep(0.2)
+    
+    if checkIfOre(0) then
+        print("ORE FOUND")
+        mineVein()
+    end
+    turtle.dig()
+    turtle.forward()
+    fuelAmount = turtle.getFuelLevel()
+    if(fuelAmount < 200) then
+        break
+    end
+end
+ 
+ turtle.turnLeft()
+ turtle.turnLeft()
+   
+for i = 0,distanceToMine,1
+do
+    if(checkIfGlowstone()) then
+        break
+    end
+    turtle.dig()
+    turtle.forward()
+end
+
+turtle.turnLeft()
+turtle.turnLeft()
+ 
+--end
