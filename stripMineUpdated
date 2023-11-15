@@ -38,7 +38,7 @@ end
         foundAOre = false
 
         if checkIfOre(0) then
-            print("ErrorTest")
+            print("Print Ore Ahead")
             print(currentPosition+vector.new(0,0,1))
             table.insert(veinValues, {vector = vector.new(currentPosition + vector.new(0,0,1)), broken = false})
             foundAOre = true
@@ -47,6 +47,7 @@ end
         turtle.turnLeft()
     
         if checkIfOre(0) then
+            print("Print Ore To the Left")
             table.insert(veinValues, {vector = vector.new(currentPosition + vector.new(1,0,0)), broken = false})
             foundAOre = true
         end
@@ -54,6 +55,7 @@ end
         turtle.turnLeft()
     
         if checkIfOre(0) then
+            print("Print Ore To the Behind")
             table.insert(veinValues, {vector = vector.new(currentPosition + vector.new(0,0,-1)), broken = false})
             foundAOre = true
         end
@@ -61,6 +63,7 @@ end
         turtle.turnLeft()
     
         if checkIfOre(0) then
+            print("Print Ore To the Right")
             table.insert(veinValues, {vector = vector.new(currentPosition + vector.new(-1,0,0)), broken = false})
             foundAOre = true
         end
@@ -68,13 +71,21 @@ end
         turtle.turnLeft()
 
         if checkIfOre(1) then
+            print("Print Ore To the Up")
             table.insert(veinValues, {vector = vector.new(currentPosition+ vector.new(0,1,0)), broken = false})
             foundAOre = true
         end
 
         if checkIfOre(2) then
+            print("Print Ore To the Down")
             table.insert(veinValues, {vector = vector.new(currentPosition+ vector.new(0,-1,0)), broken = false})
             foundAOre = true
+        end
+
+        for k,v in pairs(veinValues) do
+            for k,v in pairs(veinValues) do
+                print(v)
+            end
         end
 
         return foundAOre
@@ -96,7 +107,6 @@ function mineVein(turned)
             if(veinValues[1]["vectorval"]~= nil) then -- up to here
                 moveToAnotherVector(veinValues[1]["vectorval"],currentPosition)
                 table.remove(veinValues, 1)
-                table.sort(veinValues)
                 checkAround(currentPosition)
             else 
                 break
