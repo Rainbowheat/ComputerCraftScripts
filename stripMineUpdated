@@ -10,8 +10,6 @@ end
 
 function checkIfOre(direction)
 
-    checkAround()
-
     if direction == 0 then
         checker, data = turtle.inspect() -- if forward don't add to y column 
     end
@@ -37,39 +35,50 @@ end
 -- turn to straight afterwards
     function checkAround()
 
+        foundAOre = false
+
         if checkIfOre(0) then
             print("ErrorTest")
             print(currentPosition+vector.new(0,0,1))
             table.insert(veinValues, {vector = vector.new(currentPosition + vector.new(0,0,1)), broken = false})
+            foundAOre = true
         end
     
         turtle.turnLeft()
     
         if checkIfOre(0) then
             table.insert(veinValues, {vector = vector.new(currentPosition + vector.new(1,0,0)), broken = false})
+            foundAOre = true
         end
     
         turtle.turnLeft()
     
         if checkIfOre(0) then
             table.insert(veinValues, {vector = vector.new(currentPosition + vector.new(0,0,-1)), broken = false})
+            foundAOre = true
         end
     
         turtle.turnLeft()
     
         if checkIfOre(0) then
             table.insert(veinValues, {vector = vector.new(currentPosition + vector.new(-1,0,0)), broken = false})
+            foundAOre = true
         end
     
         turtle.turnLeft()
 
         if checkIfOre(1) then
             table.insert(veinValues, {vector = vector.new(currentPosition+ vector.new(0,1,0)), broken = false})
+            foundAOre = true
         end
 
         if checkIfOre(2) then
             table.insert(veinValues, {vector = vector.new(currentPosition+ vector.new(0,-1,0)), broken = false})
+            foundAOre = true
         end
+
+        return foundAOre
+
     end
 
 
@@ -252,6 +261,8 @@ do
     print("checking")
     os.sleep(0.2)
     
+    checkAround()
+
     if checkIfOre(0) then
         print("ORE FOUND")
         mineVein()
