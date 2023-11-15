@@ -40,7 +40,7 @@ end
         if checkIfOre(0) then
             print("Print Ore Ahead")
             print(currentPosition+vector.new(0,0,1))
-            table.insert(veinValues, {vector = vector.new(currentPosition + vector.new(0,0,1)), broken = false})
+            table.insert(vector.new(currentPosition + vector.new(0,0,1)))
             foundAOre = true
         end
     
@@ -48,7 +48,7 @@ end
     
         if checkIfOre(0) then
             print("Print Ore To the Left")
-            table.insert(veinValues, {vector = vector.new(currentPosition + vector.new(1,0,0)), broken = false})
+            table.insert(vector.new(currentPosition + vector.new(1,0,0)))
             foundAOre = true
         end
     
@@ -56,7 +56,7 @@ end
     
         if checkIfOre(0) then
             print("Print Ore To the Behind")
-            table.insert(veinValues, {vector = vector.new(currentPosition + vector.new(0,0,-1)), broken = false})
+            table.insert(vector.new(currentPosition + vector.new(0,0,-1)))
             foundAOre = true
         end
     
@@ -64,7 +64,7 @@ end
     
         if checkIfOre(0) then
             print("Print Ore To the Right")
-            table.insert(veinValues, {vector = vector.new(currentPosition + vector.new(-1,0,0)), broken = false})
+            table.insert(vector.new(currentPosition + vector.new(-1,0,0)))
             foundAOre = true
         end
     
@@ -72,13 +72,13 @@ end
 
         if checkIfOre(1) then
             print("Print Ore To the Up")
-            table.insert(veinValues, {vector = vector.new(currentPosition+ vector.new(0,1,0)), broken = false})
+            table.insert(vector.new(currentPosition+ vector.new(0,1,0)))
             foundAOre = true
         end
 
         if checkIfOre(2) then
             print("Print Ore To the Down")
-            table.insert(veinValues, {vector = vector.new(currentPosition+ vector.new(0,-1,0)), broken = false})
+            table.insert(vector.new(currentPosition+ vector.new(0,-1,0)))
             foundAOre = true
         end
 
@@ -93,19 +93,19 @@ function mineVein(turned)
     os.sleep(0.2)
     local startVeinPosition = vector.new(0,0,0)
     local currentPosition = vector.new(0,0,0) -- after everymovement add to this
-    
+  
     veinFinished = false
     
     -- main loop
     -- is looping forever 
     while veinFinished == false do
         if (veinValues[1] ~= nil) then
-            if(veinValues[1]["vectorval"]~= nil) then -- up to here
-                moveToAnotherVector(veinValues[1]["vectorval"],currentPosition)
+            if(veinValues[1]~= nil) then -- up to here
+                moveToAnotherVector(veinValues[1],currentPosition)
                 table.remove(veinValues, 1)
                 checkAround(currentPosition)
             else --this is breaking constantly
-                print(veinValues[1]["vectorval"])
+                print("this is breaking")
                 break
             end
             
@@ -235,7 +235,7 @@ end
 
 home = vector.new(0,0,0)
 
-veinValues = {{vectorval = vector.new(0,0,0), broken = false}}
+veinValues = {vector.new(0,0,0)}
 
 
 --White list of ores
