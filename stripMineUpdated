@@ -33,7 +33,7 @@ function checkIfOre(direction)
 end
 
 -- turn to straight afterwards
-    function checkAround()
+    function checkAround(currentPosition)
 
         foundAOre = false
 
@@ -97,7 +97,7 @@ function mineVein(turned)
                 moveToAnotherVector(veinValues[1]["vectorval"],currentPosition)
                 table.remove(veinValues, 1)
                 table.sort(veinValues)
-                checkAround()
+                checkAround(currentPosition)
             else 
                 break
             end
@@ -261,7 +261,7 @@ do
     print("checking")
     os.sleep(0.2)
     
-    checkAround()
+    checkAround(vector.new(0,0,0))
 
     if checkIfOre(0) then
         print("ORE FOUND")
