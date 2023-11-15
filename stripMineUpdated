@@ -125,10 +125,7 @@ function moveToAnotherVector (whereToGo, whereAm) --always assume looking in z a
     yDisplaceMent = whereToGo.y - whereAm.y
     zDisplaceMent = whereToGo.z - whereAm.z
 
-    print(whereToGo)
-    print("^ where to go")
-    print(whereAm)
-    print("^ where am")
+    print(zDisplaceMent .. " Z displaceMent")
 
     function xForward(displaceMent)
 
@@ -149,6 +146,7 @@ function moveToAnotherVector (whereToGo, whereAm) --always assume looking in z a
                 if turtle.forward() then
                     i=i+1
                     print(i)
+                    print("forward?")
                 else
                     turtle.dig()
                 end
