@@ -101,6 +101,8 @@ function mineVein(turned)
     while veinFinished == false do
         if (veinValues[1] ~= nil) then
             if(veinValues[1]~= nil) then -- up to here
+                print("success moving to another vec")
+                print(veinValues[1])
                 moveToAnotherVector(veinValues[1],currentPosition)
                 table.remove(veinValues, 1)
                 checkAround(currentPosition)
