@@ -96,7 +96,9 @@ function mineVein(turned)
         if (veinValues[1] ~= nil) then
             if (veinValues[1] == vector.new(0,0,0)) then
                 table.remove(veinValues, 1)
-            end
+                for k ,v in pairs(veinValues) do
+                    print(v)
+                end
             elseif(veinValues[1]~= nil) then -- up to here
                 print("success moving to another vec")
                 print(veinValues[1])
