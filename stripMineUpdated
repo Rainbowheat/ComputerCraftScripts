@@ -261,9 +261,9 @@ do
     print("checking")
     os.sleep(0.2)
     
-    checkAround(vector.new(0,0,0))
+    
 
-    if checkIfOre(0) then
+    if checkAround(vector.new(0,0,0)) then
         print("ORE FOUND")
         mineVein()
     end
