@@ -1,0 +1,331 @@
+function checkIfGlowstone(Boo)
+    local success, data = turtle.inspect()
+
+    if success then
+        if data.name == "minecraft:glowstone" then
+            return true
+        end
+    end
+end
+
+function checkIfOre(direction)
+
+    if direction == 0 then
+        checker, data = turtle.inspect() -- if forward don't add to y column 
+    end
+    if direction == 1 then
+        checker, data = turtle.inspectUp() -- add one to y value
+    end
+    if direction == 2 then
+        checker, data = turtle.inspectDown() -- minus one to y value 
+    end 
+
+
+    if checker then
+        for key, value in pairs(allOres) do
+            if data.name == value then
+                return true
+            end
+        end
+        return false
+    end
+end
+
+-- turn to straight afterwards
+function checkAround(currentPosition)
+
+        foundAOre = false
+
+        if checkIfOre(0) then
+            print(currentPosition+vector.new(0,0,1))
+            print("^ where to go")
+            table.insert(veinValues, vector.new(currentPosition + vector.new(0,0,1)))
+            foundAOre = true
+        end
+    
+        turtle.turnLeft()
+    
+        if checkIfOre(0) then
+            table.insert(veinValues, vector.new(currentPosition + vector.new(1,0,0)))
+            foundAOre = true
+        end
+    
+        turtle.turnLeft()
+    
+        if checkIfOre(0) then
+            table.insert(veinValues, vector.new(currentPosition + vector.new(0,0,-1)))
+            foundAOre = true
+        end
+    
+        turtle.turnLeft()
+    
+        if checkIfOre(0) then
+            table.insert(veinValues, vector.new(currentPosition + vector.new(-1,0,0)))
+            foundAOre = true
+        end
+    
+        turtle.turnLeft()
+
+        if checkIfOre(1) then
+            table.insert(veinValues, vector.new(currentPosition+ vector.new(0,1,0)))
+            foundAOre = true
+        end
+
+        if checkIfOre(2) then
+            table.insert(veinValues, vector.new(currentPosition+ vector.new(0,-1,0)))
+            foundAOre = true
+        end
+
+        
+
+        return foundAOre
+
+end
+
+function turnDirection(direction)
+    -- true = right false = left
+    if direction == true then
+        turtle.turnRight()
+    end
+    if direction == false then
+        turtle.turnLeft()
+    end
+    
+end
+
+function mineVein(x , y , z)
+    i = 0
+    while i < z do
+        if turtle.dig() then
+            turtle.forward()
+            i = i + 1
+        end
+    end
+
+    turtle.turnLeft() -- remember to turn back to forwards
+    i = 0
+    while i < x do
+        if turtle.dig() then
+            turtle.forward()
+            i = i+1
+        end
+    end
+
+    turtle.turnLeft()
+    turtle.turnLeft()
+    i = 0
+
+    while i < y do
+        if turtle.digDown() then
+            turtle.down()
+            i = i+1
+        end
+    end
+    
+    direction = false
+    i1 = 0
+    b1 = false
+    i2 = 0
+    i3 = 0
+    while i1 < y do
+
+
+        while i2 < x do
+            if b1 then
+                turnDirection(direction)
+                b1 = false
+            end
+
+            if not turtle.forward() then
+                turtle.dig()
+            else
+                turnDirection(direction)
+                direction = not direction
+                i2 = i2+1
+                i3 = 0
+
+                while i3 < z do
+                    if turtle.dig() then
+                        turtle.forward()
+                        i3 = i3+1
+                    end
+                end
+                b1 = true
+            end
+        end
+    end    
+
+
+end
+
+function moveToAnotherVector (whereToGo, whereAm) --always assume looking in z axis at start 
+
+    xDisplaceMent = whereToGo.x - whereAm.x
+    yDisplaceMent = whereToGo.y - whereAm.y
+    zDisplaceMent = whereToGo.z - whereAm.z
+
+    print(zDisplaceMent .. " Z displaceMent")
+
+    function xForward(displaceMent)
+
+        local normalisedDisplaceMent = 0
+
+        if displaceMent > 0 then
+            turtle.turnLeft()
+            normalisedDisplaceMent = displaceMent
+        elseif displaceMent < 0 then
+            turtle.turnRight()
+            normalisedDisplaceMent = displaceMent * -1
+        end
+        
+        if displaceMent ~= 0 then
+            
+            i = 0
+            while i < normalisedDisplaceMent do
+                if turtle.forward() then
+                    i=i+1
+                    print(i)
+                    print("forward?")
+                else
+                    turtle.dig()
+                end
+            end
+        end
+
+        if displaceMent < 0 then
+            turtle.turnLeft()
+        elseif displaceMent > 0 then
+            turtle.turnRight()
+        end
+    end
+
+    function zForward(displaceMent)
+
+        local normalisedDisplaceMent = 0
+
+        if displaceMent < 0 then
+            turtle.turnLeft()
+            turtle.turnLeft()
+            normalisedDisplaceMent = displaceMent * -1
+        else
+            normalisedDisplaceMent = displaceMent
+        end
+        
+        
+        if displaceMent ~= 0 then
+            i = 0
+            while i < normalisedDisplaceMent
+            do
+                if turtle.forward() then
+                    i=i+1
+                else
+                    turtle.dig()
+                end
+            end
+        end
+        
+
+        if displaceMent < 0 then
+            turtle.turnLeft()
+            turtle.turnLeft()
+        end
+        
+    end
+
+    function yForward(displaceMent)
+        if displaceMent ~= 0 then
+            if displaceMent > 0 then
+                i = 0
+                while i < displaceMent
+                do
+                    if turtle.up() then
+                        i=i+1
+                    else
+                        turtle.digUp()
+                    end
+                end
+            else
+                displaceMent = -displaceMent
+
+                i = 0
+                while i < displaceMent
+                do
+                    if turtle.down() then
+                        i=i+1
+                    else
+                        turtle.digDown()
+                    end
+                end
+            end
+        end
+    end
+    
+    zForward(zDisplaceMent)
+
+    xForward(xDisplaceMent)
+
+    yForward(yDisplaceMent)
+    
+end
+
+home = vector.new(0,0,0)
+
+veinValues = {vector.new(0,0,0)}
+
+
+--White list of ores
+allOres = {"minecraft:coal_ore", "minecraft:deepslate_coal_ore",
+ "minecraft:iron_ore", "minecraft:deepslate_iron_ore",
+  "minecraft:gold_ore", "minecraft:deepslate_gold_ore",
+   "minecraft:diamond_ore", "minecraft:deepslate_diamond_ore",
+   "immersiveengineering:ore_silver","immersiveengineering:deepslate_ore_silver", "minecraft:netherrack"}
+
+ 
+print("How far to Mine: ")
+distanceToMine = tonumber(read())
+ 
+fuelAmount = turtle.getFuelLevel()
+ 
+
+--distanceToMine equal to void main
+for x = 0,distanceToMine,1
+do 
+    os.sleep(0.2)
+    
+    
+
+    if checkAround(vector.new(0,0,0)) then
+        print("ORE FOUND")
+        mineVein()
+    end
+
+    for k,v in pairs(veinValues) do
+        for k,v in pairs(veinValues) do
+            --print(v)
+        end
+    end
+
+    turtle.dig()
+    turtle.forward()
+    fuelAmount = turtle.getFuelLevel()
+    if(fuelAmount < 200) then
+        break
+    end
+end
+ 
+ turtle.turnLeft()
+ turtle.turnLeft()
+   
+for i = 0,distanceToMine,1
+do
+    if(checkIfGlowstone()) then
+        break
+    end
+    turtle.dig()
+    turtle.forward()
+end
+
+turtle.turnLeft()
+turtle.turnLeft()
+ 
+--end
